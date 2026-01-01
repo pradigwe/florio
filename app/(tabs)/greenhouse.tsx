@@ -1,10 +1,13 @@
-import { Text, View } from "react-native";
+import { Text, useColorScheme, View } from "react-native";
 
-import { pageStyles } from "@/constants/pageStyles";
+import { Colors } from "@/constants/Colors";
+import { PageStyles } from "@/constants/PageStyles";
 
 export default function Greenhouse() {
+  const colorScheme = useColorScheme() ?? "light";
+  const theme = Colors[colorScheme];
   return (
-    <View style={pageStyles.default}>
+    <View style={[PageStyles.default, { backgroundColor: theme.background }]}>
       <Text>This is the Greenhouse Page!</Text>
     </View>
   );
