@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import ThemedView from "@/components/ThemedView";
+import { Text } from "react-native";
 
 export default function NewNotePage() {
   return (
-    <View>
+    <ThemedView>
       <Text>Create a new note!</Text>
-    </View>
+    </ThemedView>
   );
 }

@@ -1,15 +1,15 @@
-import { PageStyles } from "@/constants/PageStyles";
+import ThemedView from "@/components/ThemedView";
 import { Link, Stack } from "expo-router";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: "404 - Page not found" }} />
-      <View style={PageStyles.default}>
+      <ThemedView>
         <Text>This page doesn't exist :C</Text>
         <Link href={"/"}>Go back to the Dashboard!</Link>
-      </View>
+      </ThemedView>
     </>
   );
 }

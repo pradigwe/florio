@@ -1,15 +1,12 @@
-import { StyleSheet, Text, useColorScheme, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 
-import { Colors } from "@/constants/Colors";
-import { PageStyles } from "@/constants/PageStyles";
+import ThemedView from "@/components/ThemedView";
 
 export default function Index() {
-  const colorScheme = useColorScheme() ?? "light";
-  const theme = Colors[colorScheme];
   return (
-    <View style={[PageStyles.default, { backgroundColor: theme.background }]}>
+    <ThemedView>
       <Text>This is the Dashboard! Welcome!</Text>
-    </View>
+    </ThemedView>
   );
 }
 

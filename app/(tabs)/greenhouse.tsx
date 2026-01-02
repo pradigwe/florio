@@ -1,14 +1,10 @@
-import { Text, useColorScheme, View } from "react-native";
-
-import { Colors } from "@/constants/Colors";
-import { PageStyles } from "@/constants/PageStyles";
+import ThemedView from "@/components/ThemedView";
+import { Text } from "react-native";
 
 export default function Greenhouse() {
-  const colorScheme = useColorScheme() ?? "light";
-  const theme = Colors[colorScheme];
   return (
-    <View style={[PageStyles.default, { backgroundColor: theme.background }]}>
+    <ThemedView>
       <Text>This is the Greenhouse Page!</Text>
-    </View>
+    </ThemedView>
   );
 }
