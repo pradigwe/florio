@@ -40,18 +40,8 @@ export default function TabLayout() {
     transform: [{ rotateZ: withSpring(isOpen ? "135deg" : "0deg") }],
   }));
 
-  const renderCreateButtons = () => <></>;
-
   const handleCreatePress = () => {
-    console.log("button is", isOpen ? "opened" : "closed");
-    if (isOpen) {
-      console.log("Button is being closed.");
-      setIsOpen(!isOpen);
-    } else {
-      console.log("Button is being opened.");
-
-      setIsOpen(!isOpen);
-    }
+    isOpen ? setIsOpen(!isOpen) : setIsOpen(!isOpen);
   };
 
   const styles = StyleSheet.create({
