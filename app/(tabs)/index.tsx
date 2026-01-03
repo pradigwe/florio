@@ -2,7 +2,7 @@ import { StyleSheet, Text } from "react-native";
 
 import ThemedView from "@/components/ThemedView";
 
-export default function Index() {
+export default function DashboardScreen() {
   return (
     <ThemedView>
       <Text>This is the Dashboard! Welcome!</Text>
