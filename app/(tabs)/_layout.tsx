@@ -4,10 +4,15 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 
-import { navigate } from "expo-router/build/global-state/routing";
-
 import { useState } from "react";
-import { Pressable, StyleSheet, useColorScheme, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 import Animated, {
   useAnimatedStyle,
   withSpring,
@@ -21,10 +26,14 @@ import {
   PlusIcon,
   PottedPlantIcon,
   ShovelIcon,
+  XIcon,
 } from "phosphor-react-native";
 
 // screens
-import HiddenScreen from "./create/hidden";
+import ThemedView from "@/components/ThemedView";
+import HiddenScreen from "../create/hidden";
+import NewNotePage from "../create/new-note";
+import NewPlantPage from "../create/new-plant";
 import GreenhouseScreen from "./greenhouse";
 import DashboardScreen from "./index";
 
@@ -35,6 +44,8 @@ export default function TabLayout() {
   const theme = Colors[colorScheme];
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedPage, setSelectedPage] = useState<string>("");
 
   const rotateButton = useAnimatedStyle(() => ({
     transform: [{ rotateZ: withSpring(isOpen ? "135deg" : "0deg") }],
@@ -42,6 +53,14 @@ export default function TabLayout() {
 
   const handleCreatePress = () => {
     isOpen ? setIsOpen(!isOpen) : setIsOpen(!isOpen);
+  };
+
+  const showSelectedPage = (page: string) => {
+    if (page == "note") {
+      return <NewNotePage />;
+    } else if (page == "plant") {
+      return <NewPlantPage />;
+    }
   };
 
   const styles = StyleSheet.create({
@@ -80,36 +99,100 @@ export default function TabLayout() {
         tabBar={(props) => (
           <>
             {isOpen ? (
-              <View
-                style={{
-                  flexDirection: "row",
-                  height: 0,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 20,
-                }}
-              >
-                <IconContext.Provider
-                  value={{
-                    size: 24,
-                    color: "#fff",
-                    weight: "light",
+              <>
+                <Modal
+                  visible={modalVisible}
+                  animationType="slide"
+                  onRequestClose={() => setModalVisible(false)}
+                  style={{ flex: 1 }}
+                >
+                  <ThemedView>
+                    <View
+                      style={{
+                        width: "100%",
+                        paddingTop: 15,
+                        paddingHorizontal: 30,
+                        flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        gap: 10,
+                      }}
+                    >
+                      <Pressable
+                        style={[
+                          styles.button,
+                          {
+                            height: 40,
+                            width: 40,
+                            opacity: 0.8,
+                            marginBottom: 0,
+                          },
+                        ]}
+                        onPress={() => setModalVisible(false)}
+                      >
+                        <XIcon
+                          size={24}
+                          color="#fff"
+                          weight="bold"
+                          style={{ marginTop: 0 }}
+                        />
+                      </Pressable>
+                      <Text
+                        style={{
+                          flex: 1,
+                          opacity: 0.6,
+                          fontSize: 24,
+                          fontWeight: "semibold",
+                          textAlign: "center",
+                        }}
+                      >
+                        Create{" "}
+                        {selectedPage
+                          .charAt(0)
+                          .toUpperCase()
+                          .concat(selectedPage.slice(1, selectedPage.length))}
+                      </Text>
+                    </View>
+                    {showSelectedPage(selectedPage)}
+                  </ThemedView>
+                </Modal>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    height: 0,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 20,
                   }}
                 >
-                  <Pressable
-                    style={styles.button}
-                    onPress={() => navigate("/(tabs)/create/new-note")}
+                  <IconContext.Provider
+                    value={{
+                      size: 24,
+                      color: "#fff",
+                      weight: "light",
+                    }}
                   >
-                    <NotePencilIcon />
-                  </Pressable>
-                  <Pressable
-                    style={styles.button}
-                    onPress={() => navigate("/(tabs)/create/new-plant")}
-                  >
-                    <ShovelIcon />
-                  </Pressable>
-                </IconContext.Provider>
-              </View>
+                    <Pressable
+                      style={styles.button}
+                      onPress={() => {
+                        setModalVisible(true);
+                        setSelectedPage("note");
+                      }}
+                    >
+                      <NotePencilIcon />
+                    </Pressable>
+                    <Pressable
+                      style={styles.button}
+                      onPress={() => {
+                        setModalVisible(true);
+                        setSelectedPage("plant");
+                      }}
+                    >
+                      <ShovelIcon />
+                    </Pressable>
+                  </IconContext.Provider>
+                </View>
+              </>
             ) : (
               <></>
             )}
@@ -129,7 +212,7 @@ export default function TabLayout() {
           }}
         />
         <Tab.Screen
-          name="create"
+          name="dash"
           component={HiddenScreen}
           listeners={{
             tabPress: (e) => {
@@ -166,6 +249,9 @@ export default function TabLayout() {
                 </View>
               </View>
             ),
+            headerStyle: {
+              backgroundColor: "green",
+            },
           }}
         />
         <Tab.Screen
