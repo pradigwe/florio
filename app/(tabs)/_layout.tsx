@@ -31,6 +31,7 @@ import {
 
 // screens
 import ThemedView from "@/components/ThemedView";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import HiddenScreen from "../create/hidden";
 import NewNotePage from "../create/new-note";
 import NewPlantPage from "../create/new-plant";
@@ -106,55 +107,57 @@ export default function TabLayout() {
                   onRequestClose={() => setModalVisible(false)}
                   style={{ flex: 1 }}
                 >
-                  <ThemedView>
-                    <View
-                      style={{
-                        width: "100%",
-                        paddingTop: 15,
-                        paddingHorizontal: 30,
-                        flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "center",
-                        gap: 10,
-                      }}
-                    >
-                      <Pressable
-                        style={[
-                          styles.button,
-                          {
-                            height: 40,
-                            width: 40,
-                            opacity: 0.8,
-                            marginBottom: 0,
-                          },
-                        ]}
-                        onPress={() => setModalVisible(false)}
-                      >
-                        <XIcon
-                          size={24}
-                          color="#fff"
-                          weight="bold"
-                          style={{ marginTop: 0 }}
-                        />
-                      </Pressable>
-                      <Text
+                  <SafeAreaProvider>
+                    <ThemedView>
+                      <View
                         style={{
-                          flex: 1,
-                          opacity: 0.6,
-                          fontSize: 24,
-                          fontWeight: "semibold",
-                          textAlign: "center",
+                          width: "100%",
+                          paddingTop: 15,
+                          paddingHorizontal: 30,
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          gap: 10,
                         }}
                       >
-                        Create{" "}
-                        {selectedPage
-                          .charAt(0)
-                          .toUpperCase()
-                          .concat(selectedPage.slice(1, selectedPage.length))}
-                      </Text>
-                    </View>
-                    {showSelectedPage(selectedPage)}
-                  </ThemedView>
+                        <Pressable
+                          style={[
+                            styles.button,
+                            {
+                              height: 40,
+                              width: 40,
+                              opacity: 0.8,
+                              marginBottom: 0,
+                            },
+                          ]}
+                          onPress={() => setModalVisible(false)}
+                        >
+                          <XIcon
+                            size={24}
+                            color="#fff"
+                            weight="bold"
+                            style={{ marginTop: 0 }}
+                          />
+                        </Pressable>
+                        <Text
+                          style={{
+                            flex: 1,
+                            opacity: 0.6,
+                            fontSize: 24,
+                            fontWeight: "semibold",
+                            textAlign: "center",
+                          }}
+                        >
+                          Create{" "}
+                          {selectedPage
+                            .charAt(0)
+                            .toUpperCase()
+                            .concat(selectedPage.slice(1, selectedPage.length))}
+                        </Text>
+                      </View>
+                      {showSelectedPage(selectedPage)}
+                    </ThemedView>
+                  </SafeAreaProvider>
                 </Modal>
                 <View
                   style={{
