@@ -1,18 +1,25 @@
 export const Colors = {
   warning: "#c43737ff",
-
-  dark: {
-    text: "#fffadd",
-    background: "#6a8042",
-    navBackground: "#1e3006",
-    navIcon: "#fff",
-    navButton: "#c23b3bff",
-  },
   light: {
-    text: "#1e3006",
-    background: "#fffadd",
-    navBackground: "#1e3006",
-    navIcon: "#fff",
-    navButton: "#ed7a13",
+    background: "#FEFADF",
+    primary: "#5F6C37",
+    secondary: "#C06313",
+    navBackground: "#6a513aff",
+    navLabelInactive: "#ededed",
+    createModal: "#B7987B",
+    text: "#EDEDED",
+    textSecondary: "#222222",
+    header: "#333333",
+  },
+  dark: {
+    background: "#DCA15D",
+    primary: "#273617",
+    secondary: "#7A1010",
+    navBackground: "#4E2D0E",
+    navLabelInactive: "#ededed",
+    createModal: "#FEFADF",
+    text: "#EDEDED",
+    textSecondary: "#222222",
+    header: "#333333",
   },
 };
