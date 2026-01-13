@@ -7,23 +7,44 @@ import {
 
 type ThemedViewProps = SafeAreaViewProps & {
   style?: StyleProp<ViewStyle>;
+  fullScreen?: boolean | false;
 };
 
-export default function ThemedView({ style, ...props }: ThemedViewProps) {
+export default function ThemedView({
+  style,
+  fullScreen,
+  ...props
+}: ThemedViewProps) {
   const colorScheme = useColorScheme() ?? "light";
   const theme = Colors[colorScheme];
   return (
-    <SafeAreaView
-      style={[
-        {
-          backgroundColor: theme.background,
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "flex-start",
-        },
-        style,
-      ]}
-      {...props}
-    />
+    <>
+      {fullScreen ? (
+        <SafeAreaView
+          style={[
+            {
+              backgroundColor: theme.background,
+              flex: 1,
+              justifyContent: "flex-start",
+            },
+            style,
+          ]}
+          {...props}
+        />
+      ) : (
+        <SafeAreaView
+          style={[
+            {
+              backgroundColor: theme.background,
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "flex-start",
+            },
+            style,
+          ]}
+          {...props}
+        />
+      )}
+    </>
   );
 }

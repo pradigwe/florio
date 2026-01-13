@@ -31,6 +31,9 @@ export const Fonts = {
     fontSize: 13,
     opacity: 0.7,
   },
+  authText: {
+    fontSize: 18,
+  },
   navLabelText: {
     fontSize: 12,
   },
