@@ -1,7 +1,10 @@
 import RouteGuard from "@/components/RouteGuard";
 import AuthProvider from "@/lib/auth-context";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
   return (
     <SafeAreaProvider>

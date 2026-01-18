@@ -1,15 +1,7 @@
-// create context, variables used
-// login, register, isloading, session, sign out
-
-import { createContext, useContext, useEffect, useState } from "react";
+import { SplashScreen } from "expo-router";
+import { createContext, useEffect, useState } from "react";
 import { ID, Models } from "react-native-appwrite";
 import { account } from "./appwrite";
-
-// create context
-
-// create AuthProvider
-// define the context variables
-// create login async function
 
 type AuthContextTypes = {
   isLoading: boolean;
@@ -23,7 +15,9 @@ type AuthContextTypes = {
   signOut: () => Promise<void>;
 };
 
-export const AuthContext = createContext<AuthContextTypes | undefined>(undefined);
+export const AuthContext = createContext<AuthContextTypes | undefined>(
+  undefined
+);
 
 export default function AuthProvider({
   children,
@@ -48,6 +42,9 @@ export default function AuthProvider({
       setUser(null);
     } finally {
       setIsLoading(false);
+      setTimeout(() => {
+        SplashScreen.hide();
+      }, 1000);
     }
   };
 
