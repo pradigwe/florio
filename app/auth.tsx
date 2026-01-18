@@ -1,6 +1,7 @@
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { Fonts } from "@/constants/Fonts";
+import { useAuth } from "@/hooks/useAuth";
 import { Dokdo_400Regular } from "@expo-google-fonts/dokdo";
 import { Nunito_500Medium } from "@expo-google-fonts/nunito";
 import { useFonts } from "expo-font";
@@ -17,6 +18,7 @@ import {
   useColorScheme,
   View,
 } from "react-native";
+import Animated from "react-native-reanimated";
 
 export default function AuthScreen() {
   const colorScheme = useColorScheme() ?? "light";
@@ -25,8 +27,6 @@ export default function AuthScreen() {
     Nunito_500Medium,
     Dokdo_400Regular,
   });
-
-  const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
   const styles = StyleSheet.create({
     container: {
@@ -91,10 +91,53 @@ export default function AuthScreen() {
       fontSize: Fonts.h2.fontSize,
       paddingBottom: 8,
     },
+    errorMessageText: {
+      color: Colors.warning,
+      fontFamily: "Nunito_500Medium",
+      fontSize: Fonts.h3.fontSize,
+    },
+    animationContainer: {
+      width: "100%",
+      alignItems: "center",
+    },
   });
 
-  const handleSwitch = () => {
-    setIsSignUp((prev) => !prev);
+  const { login, register } = useAuth();
+
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const handleAuth = async () => {
+    if (!email || !password || (!isLogin && !name)) {
+      setError("Please fill in all fields");
+      return;
+    }
+    if (!isLogin && password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    setError("");
+    if (isLogin) {
+      const error = await login(email, password);
+      if (error) {
+        setError(error);
+        return;
+      }
+    } else {
+      const error = await register(email, password, name);
+      if (error) {
+        setError(error);
+        return;
+      }
+    }
+  };
+
+  const handleLoginSwitch = () => {
+    setIsLogin((prev) => !prev);
   };
 
   if (!loaded) {
@@ -111,9 +154,11 @@ export default function AuthScreen() {
           <View style={styles.container}>
             <Text style={styles.logo}>Florio</Text>
             <Text style={styles.messageText}>
-              {isSignUp ? "Create Account" : "Welcome Back"}
+              {isLogin ? "Welcome Back" : "Create Account"}
             </Text>
-            {isSignUp ? (
+            {isLogin ? (
+              <></>
+            ) : (
               <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>Name</Text>
                 <TextInput
@@ -122,10 +167,10 @@ export default function AuthScreen() {
                   selectionColor={theme.secondary}
                   autoCapitalize="none"
                   autoComplete="name"
+                  autoCorrect={false}
+                  onChangeText={setName}
                 />
               </View>
-            ) : (
-              <></>
             )}
             <View style={styles.inputContainer}>
               <Text style={styles.inputLabel}>Email</Text>
@@ -136,6 +181,8 @@ export default function AuthScreen() {
                 selectionColor={theme.secondary}
                 autoCapitalize="none"
                 autoComplete="email"
+                autoCorrect={false}
+                onChangeText={setEmail}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -147,18 +194,26 @@ export default function AuthScreen() {
                 autoCorrect={false}
                 selectionColor={theme.secondary}
                 secureTextEntry
+                onChangeText={setPassword}
               />
             </View>
-            <Pressable style={styles.button}>
-              <Text style={styles.buttonText}>
-                {isSignUp ? "Sign Up" : "Sign In"}
-              </Text>
-            </Pressable>
-            <Pressable style={styles.buttonSwitchAuth} onPress={handleSwitch}>
+            {error && <Text style={styles.errorMessageText}>{error}</Text>}
+            <Animated.View style={[styles.animationContainer]}>
+              <Pressable style={styles.button} onPress={handleAuth}>
+                <Text style={styles.buttonText}>
+                  {isLogin ? "Sign In" : "Sign Up"}
+                </Text>
+              </Pressable>
+            </Animated.View>
+
+            <Pressable
+              style={styles.buttonSwitchAuth}
+              onPress={handleLoginSwitch}
+            >
               <Text style={styles.buttonSwitchAuthText}>
-                {isSignUp
-                  ? "Already have an account? Sign In"
-                  : "Don't have an account? Sign Up"}
+                {isLogin
+                  ? "Don't have an account? Sign up"
+                  : "Already have an account? Sign in"}
               </Text>
             </Pressable>
           </View>
