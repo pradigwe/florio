@@ -1,10 +1,5 @@
 [
   {
-    "message": "The password you are trying to use contains references to your name or email. For your security, please choose a different password and try again.",
-    "type": "password_personal_data",
-    "code": 400
-  },
-  {
     "message": "The email or password you entered is incorrect. Please try again.",
     "type": "user_invalid_credentials",
     "code": 401
@@ -33,5 +28,10 @@
     "message": "An account with this email already exists. Try logging in instead.",
     "type": "user_already_exists",
     "code": 409
+  },
+  {
+    "message": "Try choosing a password that doesn't include personal details.",
+    "type": "password_personal_data",
+    "code": 400
   }
 ]

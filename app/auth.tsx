@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Dokdo_400Regular } from "@expo-google-fonts/dokdo";
 import { Nunito_500Medium } from "@expo-google-fonts/nunito";
 import { useFonts } from "expo-font";
+import { CheckFatIcon, CircleIcon, IconContext } from "phosphor-react-native";
 import { useState } from "react";
 import {
   Keyboard,
@@ -21,6 +22,7 @@ import {
 import Animated from "react-native-reanimated";
 
 export default function AuthScreen() {
+  // styling
   const colorScheme = useColorScheme() ?? "light";
   const theme = Colors[colorScheme];
   const [loaded] = useFonts({
@@ -92,6 +94,7 @@ export default function AuthScreen() {
       paddingBottom: 8,
     },
     errorMessageText: {
+      marginTop: 15,
       color: Colors.warning,
       fontFamily: "Nunito_500Medium",
       fontSize: Fonts.h3.fontSize,
@@ -100,23 +103,55 @@ export default function AuthScreen() {
       width: "100%",
       alignItems: "center",
     },
+    checkListContainer: {
+      backgroundColor: theme.navBackground,
+      width: "95%",
+      padding: 10,
+      paddingLeft: 20,
+      borderRadius: 5,
+      gap: 5,
+    },
+    checklistSection: {
+      flexDirection: "row",
+      gap: 15,
+      alignItems: "center",
+    },
+    checkListText: {
+      fontFamily: "Nunito_500Medium",
+      fontSize: Fonts.primaryText.fontSize,
+    },
   });
 
   const { login, register } = useAuth();
 
+  // authentication variables
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [error, setError] = useState<string>("");
 
+  // checking if user has a valid password when registering
+  const [passwordLength, setPasswordLength] = useState<boolean>(false);
+  const [passwordhasUpper, setPasswordhasUpper] = useState<boolean>(false);
+  const [passwordhasNumber, setPasswordhasNumber] = useState<boolean>(false);
+
+  const checkValidPassword = (password: string) => {
+    setPasswordLength(password.length >= 8);
+    setPasswordhasUpper(/[A-Z]/.test(password));
+    setPasswordhasNumber(/[0-9]/.test(password));
+  };
+
   const handleAuth = async () => {
     if (!email || !password || (!isLogin && !name)) {
       setError("Please fill in all fields");
       return;
     }
-    if (!isLogin && password.length < 8) {
-      setError("Password must be at least 8 characters");
+    if (
+      !isLogin &&
+      (!passwordLength || !passwordhasNumber || !passwordhasUpper)
+    ) {
+      setError("Your password doesn't meet all the requirements yet.");
       return;
     }
 
@@ -194,9 +229,86 @@ export default function AuthScreen() {
                 autoCorrect={false}
                 selectionColor={theme.secondary}
                 secureTextEntry
-                onChangeText={setPassword}
+                onChangeText={(password) => {
+                  checkValidPassword(password);
+                  setPassword(password);
+                }}
               />
             </View>
+            {isLogin ? (
+              <></>
+            ) : (
+              <View style={styles.checkListContainer}>
+                <IconContext.Provider value={{ size: 16, weight: "bold" }}>
+                  <View style={styles.checklistSection}>
+                    {passwordLength ? (
+                      <CheckFatIcon
+                        color={theme.passwordChecklist}
+                        weight="fill"
+                      />
+                    ) : (
+                      <CircleIcon color={theme.textInactive} />
+                    )}
+                    <Text
+                      style={[
+                        styles.checkListText,
+                        {
+                          color: passwordLength
+                            ? theme.text
+                            : theme.textInactive,
+                        },
+                      ]}
+                    >
+                      At least 8 characters
+                    </Text>
+                  </View>
+                  <View style={styles.checklistSection}>
+                    {passwordhasUpper ? (
+                      <CheckFatIcon
+                        color={theme.passwordChecklist}
+                        weight="fill"
+                      />
+                    ) : (
+                      <CircleIcon color={theme.textInactive} />
+                    )}
+                    <Text
+                      style={[
+                        styles.checkListText,
+                        {
+                          color: passwordhasUpper
+                            ? theme.text
+                            : theme.textInactive,
+                        },
+                      ]}
+                    >
+                      Includes an uppercase letter
+                    </Text>
+                  </View>
+                  <View style={styles.checklistSection}>
+                    {passwordhasNumber ? (
+                      <CheckFatIcon
+                        color={theme.passwordChecklist}
+                        weight="fill"
+                      />
+                    ) : (
+                      <CircleIcon color={theme.textInactive} />
+                    )}
+                    <Text
+                      style={[
+                        styles.checkListText,
+                        {
+                          color: passwordhasNumber
+                            ? theme.text
+                            : theme.textInactive,
+                        },
+                      ]}
+                    >
+                      Includes a number{" "}
+                    </Text>
+                  </View>
+                </IconContext.Provider>
+              </View>
+            )}
             {error && <Text style={styles.errorMessageText}>{error}</Text>}
             <Animated.View style={[styles.animationContainer]}>
               <Pressable style={styles.button} onPress={handleAuth}>
