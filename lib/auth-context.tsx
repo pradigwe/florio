@@ -1,6 +1,7 @@
+import errorMsg from "@/data/errorMessages.json";
 import { SplashScreen } from "expo-router";
 import { createContext, useEffect, useState } from "react";
-import { ID, Models } from "react-native-appwrite";
+import { AppwriteException, ID, Models } from "react-native-appwrite";
 import { account } from "./appwrite";
 
 type AuthContextTypes = {
@@ -10,13 +11,15 @@ type AuthContextTypes = {
   register: (
     email: string,
     password: string,
-    name: string
+    name: string,
   ) => Promise<string | null>;
   signOut: () => Promise<void>;
 };
 
+const errorMessages = errorMsg;
+
 export const AuthContext = createContext<AuthContextTypes | undefined>(
-  undefined
+  undefined,
 );
 
 export default function AuthProvider({
@@ -25,7 +28,7 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -58,8 +61,14 @@ export default function AuthProvider({
       setUser(session);
       return null;
     } catch (error) {
-      if (error instanceof Error) {
-        return error.message;
+      if (error instanceof AppwriteException) {
+        const specificError = errorMessages.find(
+          (err) => err.type === error.type,
+        );
+        if (specificError) {
+          console.log(`[${error.code}] ${error.type}`);
+          return specificError.message;
+        }
       }
       return "An error occured during sign in";
     }
@@ -76,8 +85,18 @@ export default function AuthProvider({
       await login(email, password);
       return null;
     } catch (error) {
-      if (error instanceof Error) {
-        return error.message;
+      if (error instanceof AppwriteException) {
+        const specificError = errorMessages.find(
+          (err) => err.type === error.type,
+        );
+        if (specificError) {
+          console.log(`[${error.code}] ${error.type}`);
+          return specificError.message;
+        }
+
+        // future idea: check error code. tell user the group that the error falls under
+        // maybe instruct to contact support if it persists?
+        // also maybe make this a pop up with link a link/premade email or something
       }
       return "An error occured during sign up";
     }

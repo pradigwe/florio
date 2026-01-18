@@ -1,0 +1,37 @@
+[
+  {
+    "message": "The password you are trying to use contains references to your name or email. For your security, please choose a different password and try again.",
+    "type": "password_personal_data",
+    "code": 400
+  },
+  {
+    "message": "The email or password you entered is incorrect. Please try again.",
+    "type": "user_invalid_credentials",
+    "code": 401
+  },
+  {
+    "message": "An account with this email already exists. Try logging in instead.",
+    "type": "user_email_already_exists",
+    "code": 409
+  },
+  {
+    "message": "This account has been disabled. Please contact support.",
+    "type": "user_blocked",
+    "code": 401
+  },
+  {
+    "message": "This email isn't authorized for registration yet. If you're a beta tester, reach out to support and we'll help you get set up.",
+    "type": "user_email_not_whitelisted",
+    "code": 401
+  },
+  {
+    "message": "We couldn't find an account with this email.",
+    "type": "user_not_found",
+    "code": 404
+  },
+  {
+    "message": "An account with this email already exists. Try logging in instead.",
+    "type": "user_already_exists",
+    "code": 409
+  }
+]
