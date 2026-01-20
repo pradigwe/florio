@@ -1,5 +1,5 @@
 import RouteGuard from "@/components/RouteGuard";
-import AuthProvider from "@/lib/auth-context";
+import AuthProvider from "@/contexts/auth-context";
 import { SplashScreen, Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 

@@ -2,7 +2,7 @@ import errorMsg from "@/data/errorMessages.json";
 import { SplashScreen } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { AppwriteException, ID, Models } from "react-native-appwrite";
-import { account } from "./appwrite";
+import { account } from "../services/appwrite";
 
 type AuthContextTypes = {
   isLoading: boolean;
