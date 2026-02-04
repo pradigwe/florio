@@ -10,8 +10,9 @@ export const Colors = {
     text: "#EDEDED",
     textInactive: "#edededb3",
     textSecondary: "#222222",
-    header: "#333333",
+    header: "#1a1a1a",
     passwordChecklist: "#acba84",
+    searchBar: "#f9f9f9",
   },
   dark: {
     background: "#DCA15D",
@@ -25,5 +26,6 @@ export const Colors = {
     textSecondary: "#222222",
     header: "#333333",
     passwordChecklist: "#273617",
+    searchBar: "#f9f9f9",
   },
 };

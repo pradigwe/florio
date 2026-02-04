@@ -10,7 +10,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <AuthProvider>
         <RouteGuard>
-          <Stack screenOptions={{ headerShown: false }}>
+          <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
             <Stack.Screen name="create" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>

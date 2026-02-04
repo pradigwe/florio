@@ -71,7 +71,7 @@ export default function CreateModal({ visible, onClose }: CreateModalProps) {
         onPress={() => sheetRef.current?.dismiss(dismissSheetAnimation)}
       />
     ),
-    []
+    [],
   );
 
   const renderBackground = ({ style }: BottomSheetModalBackgroundProps) => {
@@ -199,7 +199,7 @@ export default function CreateModal({ visible, onClose }: CreateModalProps) {
                     <Pressable
                       style={styles.buttonContainer}
                       onPress={() => {
-                        navigate("/create/new-plant");
+                        navigate("/create-plant/search");
                         sheetRef.current?.close(dismissSheetAnimation);
                       }}
                     >
